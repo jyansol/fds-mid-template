@@ -69,6 +69,19 @@ async function drawTodoList() {
   const fragment = document.importNode(templates.todoList, true);
   //2. 내용채우고 이벤트 리스너 등록하기
   const todoListEl = fragment.querySelector('.todo-list');
+  const todoFormEl = fragment.querySelector('.todo-form');
+
+  todoFormEl.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const body = e.target.elements.body.value;
+    const res = await api.post('/todos', {
+      body,
+      complete: false,
+    });
+    if (res.status === 201) {
+      drawTodoList();
+    }
+  });
 
   list.forEach((todoItem) => {
     //1.템플릿복사하고
