@@ -48,31 +48,23 @@ function drawLoginForm() {
     });
     localStorage.setItem('token', res.data.token);
     // 임시 테스트 코드
-    // await가 붙어있다면 뒤에껀 다 promise
-    const res2 = await api.get('/todos');
-    alert(JSON.stringify(res2.data));
+    // await가 붙어있다면 뒤에껀 다 promise . 이것을 아래에 작성
+    // const res2 = await api.get('/todos');
+    // alert(JSON.stringify(res2.data));
+    drawTodoList();
   });
   //3. 문서 내부에 삽입하기
+
+  // 로그인한 뒤에 할일 목록만 나오게 하는 코드
+  rootEl.textContent = '';
   rootEl.appendChild(fragment);
 }
 drawLoginForm();
 
 //할 일 목록 그리는 함수
 async function drawTodoList() {
-  const list = [
-    {
-      id: 1,
-      userId: 2,
-      body: 'React Study',
-      complete: false,
-    },
-    {
-      id: 2,
-      userId: 2,
-      body: 'React Router Study',
-      complete: false,
-    },
-  ];
+  const res = await api.get('/todos');
+  const list = res.data;
   //1.템플릿 복사하기
   const fragment = document.importNode(templates.todoList, true);
   //2. 내용채우고 이벤트 리스너 등록하기
@@ -88,6 +80,9 @@ async function drawTodoList() {
     todoListEl.appendChild(fragment);
   });
   //3. 문서 내부에 삽입하기
+
+  // 로그인한 뒤에 할일 목록만 나오게 하는 코드
+  rootEl.textContent = '';
   rootEl.appendChild(fragment);
 }
-drawTodoList();
+// drawTodoList();
