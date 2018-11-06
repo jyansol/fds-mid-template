@@ -7,4 +7,10 @@ body {
 h1,
 li {
   color: #fefefe;
+  list-style: none;
+}
+
+.logout {
+  background-color: tomato;
+  border-style: none;
 }

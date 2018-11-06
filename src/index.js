@@ -98,6 +98,13 @@ async function drawTodoList() {
     //2.내용채우고 이벤트 리스너 등록하기
     const bodyEl = fragment.querySelector('.body');
     const todoItemEl = fragment.querySelector('.todo-item');
+    const completeEl = fragment.querySelector('.complete');
+
+    //checkbox에 체크되게
+    if (todoItem.complete) {
+      completeEl.setAttribute('checked', '');
+      //checked라는 어트리뷰트가 completeEl에 추가되면 체크됨
+    }
     bodyEl.textContent = todoItem.body;
 
     const deleteBtn = fragment.querySelector('.delete');
@@ -108,13 +115,22 @@ async function drawTodoList() {
       // 사실 성공하면 잘 되기때문에 if문 작성할 필요없음
       drawTodoList();
     });
-
     //.문자내부에삽입
     // appendChild(fragment)하면, fragment가 비워짐!!!!!!!!!!!!!
     todoListEl.appendChild(fragment);
+
+    //checkbox : 체크의 '상태' , 서버의 상태 => 서버의 상태를 따르는 식으로 그리기
+    completeEl.addEventListener('click', async (e) => {
+      e.preventDefault();
+      //patch가 성공한다면 {}의 코드 실행
+      await api.patch('/todos/' + todoItem.id, {
+        complete: !todoItem.complete,
+        //true면 false, false면 true
+      });
+      drawTodoList();
+    });
   });
   //3. 문서 내부에 삽입하기
-
   // 로그인한 뒤에 할일 목록만 나오게 하는 코드
   rootEl.textContent = '';
   rootEl.appendChild(fragment);
