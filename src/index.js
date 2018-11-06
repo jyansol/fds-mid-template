@@ -59,7 +59,6 @@ function drawLoginForm() {
   rootEl.textContent = '';
   rootEl.appendChild(fragment);
 }
-drawLoginForm();
 
 //할 일 목록 그리는 함수
 async function drawTodoList() {
@@ -109,4 +108,14 @@ async function drawTodoList() {
   // 로그인한 뒤에 할일 목록만 나오게 하는 코드
   rootEl.textContent = '';
   rootEl.appendChild(fragment);
+}
+
+// drawLoginForm();
+// token이 로컬스토리지에 저장되어있는 경우(만약 로그인을 한 상태라면)
+// 바로 할일목록을 보여주고 아니라면 로그인 폼을 보여준다.
+// token이 존재한다면 = truthy라면
+if (localStorage.getItem('token')) {
+  drawTodoList();
+} else {
+  drawLoginForm();
 }
