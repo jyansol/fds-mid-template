@@ -88,8 +88,20 @@ async function drawTodoList() {
     const fragment = document.importNode(templates.todoItem, true);
     //2.내용채우고 이벤트 리스너 등록하기
     const bodyEl = fragment.querySelector('.body');
+    const todoItemEl = fragment.querySelector('.todo-item');
     bodyEl.textContent = todoItem.body;
+
+    const deleteBtn = fragment.querySelector('.delete');
+    deleteBtn.addEventListener('click', async (e) => {
+      // removeChild로 작성하면 새로고침하면 디비의 자료가 남아있음. 원본(데이터)을 지워야해
+      await api.delete('/todos/' + todoItem.id);
+      //그 항목의 id //서버로 부터 데이터를 받아서 요청을 보낼 경로를 만들어줌
+      // 사실 성공하면 잘 되기때문에 if문 작성할 필요없음
+      drawTodoList();
+    });
+
     //.문자내부에삽입
+    // appendChild(fragment)하면, fragment가 비워짐!!!!!!!!!!!!!
     todoListEl.appendChild(fragment);
   });
   //3. 문서 내부에 삽입하기
@@ -98,4 +110,3 @@ async function drawTodoList() {
   rootEl.textContent = '';
   rootEl.appendChild(fragment);
 }
-// drawTodoList();
